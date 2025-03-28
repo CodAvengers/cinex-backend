@@ -47,6 +47,9 @@ def create_app():
 
     # Import other blueprints as needed (inside function to avoid circular imports)
     from routes.latest_series_and_movies import tmdb_routes
+
+    # Import other blueprints as needed (auth, user, etc.)
+    from routes.top_rated import top_rated_routes
     from routes.popular_movies import popular_routes
 
 
