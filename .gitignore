@@ -3,3 +3,5 @@ venv/
 instance/
 __pycache__/
 .vscode/
+Pipfile.lock
+cinez/
