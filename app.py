@@ -47,7 +47,7 @@ def create_app():
 
     # Import blueprints (inside function to avoid circular imports)
     from routes.latest_series_and_movies import tmdb_routes
-    # Import other blueprints as needed (auth, user, etc.)
+    from routes.search_routes import search_routes
 
     # Register blueprints with URL prefixes
     app.register_blueprint(tmdb_routes, url_prefix='/api')
