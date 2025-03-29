@@ -53,6 +53,7 @@ def create_app():
     from routes.search_routes import search_routes
     from routes.authetication import user_bp
     from routes.all_movies import all_movies
+    from routes.trending_movies_and_series import trending_routes
 
 
     # Register blueprints with URL prefixes
@@ -61,6 +62,8 @@ def create_app():
     app.register_blueprint(search_routes, url_prefix='/')
     app.register_blueprint(tmdb_routes, url_prefix='/')
     app.register_blueprint(user_bp)
+    app.register_blueprint(trending_routes, url_prefix='/api')
+ 
 
     return app
 
