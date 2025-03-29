@@ -1,5 +1,4 @@
 import os
-import psycopg2
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from extensions import db, migrate
@@ -35,9 +34,12 @@ def create_app():
     jwt = JWTManager(app)
 
     #importing the bp inside the function to avoid circular imports
-
+    from routes.authetication import user_bp
 
     #register the blueprints
+    app.register_blueprint(user_bp)
+
+    return app
 
 
 app = create_app()
