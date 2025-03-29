@@ -1,5 +1,4 @@
 import os
-import psycopg2
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from extensions import db, migrate
@@ -45,15 +44,18 @@ def create_app():
     
     jwt = JWTManager(app)
 
+
     # Import other blueprints as needed (inside function to avoid circular imports)
     from routes.latest_series_and_movies import tmdb_routes
     from routes.popular_movies import popular_routes
+    from routes.authetication import user_bp
 
 
     # Register blueprints with URL prefixes
     app.register_blueprint(popular_routes, url_prefix='/api')
     app.register_blueprint(tmdb_routes, url_prefix='/api')
-    # Register other blueprints here
+    app.register_blueprint(user_bp)
+ 
 
     return app
 
