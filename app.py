@@ -1,5 +1,4 @@
 import os
-import psycopg2
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from extensions import db, migrate
@@ -52,6 +51,7 @@ def create_app():
     from routes.top_rated import top_rated_routes
     from routes.popular_movies import popular_routes
     from routes.search_routes import search_routes
+    from routes.authetication import user_bp
 
 
     # Register blueprints with URL prefixes
@@ -59,7 +59,9 @@ def create_app():
     app.register_blueprint(top_rated_routes, url_prefix='/')
     app.register_blueprint(search_routes, url_prefix='/')
     app.register_blueprint(tmdb_routes, url_prefix='/')
-    # Register other blueprints here
+    app.register_blueprint(user_bp)
+
+    return app
 
     return app
 
