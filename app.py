@@ -49,12 +49,14 @@ def create_app():
     from routes.latest_series_and_movies import tmdb_routes
     from routes.popular_movies import popular_routes
     from routes.authetication import user_bp
+    from routes.all_movies import all_movies
 
 
     # Register blueprints with URL prefixes
     app.register_blueprint(popular_routes, url_prefix='/api')
     app.register_blueprint(tmdb_routes, url_prefix='/api')
     app.register_blueprint(user_bp)
+    app.register_blueprint(all_movies)
  
 
     return app
