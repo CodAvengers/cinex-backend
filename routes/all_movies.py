@@ -6,7 +6,7 @@ load_dotenv()
 
 #base url and importing appi key
 base_url = "https://api.themoviedb.org/3"
-tmb_api_key = os.getenv('TMDB_API_KEY')
+tmb_api_key = os.getenv('tmdb_api_key')
 
 #initiallising the blueprint
 all_movies = Blueprint('all_movies', __name__, url_prefix='/api')
