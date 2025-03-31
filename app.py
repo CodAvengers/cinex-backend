@@ -49,7 +49,7 @@ def create_app():
 
     # Import other blueprints as needed (auth, user, etc.)
     from routes.top_rated import top_rated_routes
-    from routes.popular_movies import popular_routes
+    from routes.popular_routes import popular_routes
     from routes.search_routes import search_routes
     from routes.authetication import user_bp
     from routes.all_movies import all_movies
