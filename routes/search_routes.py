@@ -1,50 +1,47 @@
-from flask import Blueprint, request, jsonify 
+from flask import Blueprint, request, jsonify
 import requests
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-TMDB_API_KEY = os.getenv('TMDB_API_KEY') 
+TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 BASE_URL = "https://api.themoviedb.org/3"
 
-#blueprint for search routes
-search_routes = Blueprint('search_routes', __name__)
+# Ensure API key is loaded
+if not TMDB_API_KEY:
+    raise ValueError("TMDB_API_KEY is not set in the environment variables!")
 
-#search route for movies, tv shows or people in one query
-@search_routes.route('/search', methods=['GET'])
+# Blueprint for search routes
+search_routes = Blueprint("search_routes", __name__)
+
+# Helper function to fetch search results
+def fetch_tmdb_search(endpoint, query):
+    if not query:
+        return jsonify({"error": "Query parameter is required"}), 400
+    
+    url = f"{BASE_URL}/search/{endpoint}?api_key={TMDB_API_KEY}&query={query}"
+    
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raises HTTPError if the status is not 200
+        return jsonify(response.json())
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": "Failed to fetch data", "details": str(e)}), 500
+
+# Search for movies, TV shows, or people in one query
+@search_routes.route("/search", methods=["GET"])
 def search():
-    query = request.args.get('query')
-    if not query:
-        return jsonify({'error': 'Query parameter is required'}), 400
-    url = f"{BASE_URL}/search/multi?api_key={TMDB_API_KEY}&query={query}"
-    response = requests.get(url)
-    if response.status_code != 200:
-        return jsonify({"error": "No movies found"}), 404
-    results = response.json()
-    return jsonify(results)
+    query = request.args.get("query")
+    return fetch_tmdb_search("multi", query)
 
-#search route for movies only
-@search_routes.route('/search/movie', methods=['GET'])
+# Search for movies only
+@search_routes.route("/search/movie", methods=["GET"])
 def search_movie():
-    query = request.args.get('query')
-    if not query:
-        return jsonify({'error': 'Query parameter is required'}), 400
-    url = f"{BASE_URL}/search/movie?api_key={TMDB_API_KEY}&query={query}"
-    response = requests.get(url)
-    if response.status_code != 200:
-        return jsonify({"error": "No movies found"}), 404
-    results = response.json()
-    return jsonify(results)
+    query = request.args.get("query")
+    return fetch_tmdb_search("movie", query)
 
-#search route for tv shows only
-@search_routes.route('/search/tv', methods=['GET'])  
+# Search for TV shows only
+@search_routes.route("/search/tv", methods=["GET"])
 def search_tv_show():
-    query = request.args.get('query')
-    if not query:
-        return jsonify({'error': 'Query parameter is not provided'}), 400
-    url = f"{BASE_URL}/search/tv?api_key={TMDB_API_KEY}&query={query}"
-    response = requests.get(url)
-    if response.status_code != 200:
-        return jsonify({'error': 'No tv shows found'}), 404
-    results = response.json()
-    return jsonify(results)
+    query = request.args.get("query")
+    return fetch_tmdb_search("tv", query)
