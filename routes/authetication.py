@@ -23,7 +23,7 @@ def register():
     new_user = User(
         email=data['email']
     )
-    new_user.set_password(data['password_hash'])  # Use set_password method to hash the password
+    new_user.set_password(data['password_hash'])  # Use set_password methodto hash the password
 
     # Save user to database
     db.session.add(new_user)
@@ -39,3 +39,27 @@ def register():
     }), 201
 
 
+@user_bp.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+
+    # Validate input
+    if not data or not data.get('email') or not data.get('password_hash'):
+        return jsonify({'error': 'Email and password required'}), 400
+
+    # Find user by email
+    user = User.query.filter_by(email=data['email']).first()
+    if not user :  # Ensure user exists
+        return jsonify({'error': 'User not found. Kindly register.'}), 401
+
+    if not user.check_password(data['password_hash']):
+        return jsonify({'error': 'Incorrect password.'}), 401
+
+    # Generate JWT token
+    access_token = create_access_token(identity=str(user.id))
+
+    return jsonify({
+        'message': 'Login successful',
+        'access_token': access_token,
+        'user': user_schema.dump(user)
+    }), 200
