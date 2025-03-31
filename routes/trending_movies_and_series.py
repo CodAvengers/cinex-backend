@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 import requests
 import os
 from dotenv import load_dotenv
@@ -43,3 +43,33 @@ def get_trending_movies():
     
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
+
+#get te trending series
+@trending_routes.route('trending/series', methods=['GET'])
+def get_trending_series():
+    #dynamically change the page from reequest or default to one
+    page = request.args.get('page', '1')
+    url = f'{BASE_URL}/trending/tv/day?page={page}&language=en-US'
+    headers = {
+            "accept": "application/json",
+            "Authorization": f"Bearer {TMDB_API_KEY}"}
+    response = requests.get(url, headers=headers)
+    response.raise_for_status() #get the returned status code
+
+    if response.status_code != 200:
+        return jsonify({'error': 'No popular movies found'}), 400
+
+    series_list =[]
+    #loopthrough the results
+    for series in response.json()['results']:
+        series_list.append({
+            'id': series['id'],
+            'name': series['name'],
+            'overview': series['overview'],
+            'poster_path': f"https://image.tmdb.org/t/p/w500{series['poster_path']}" if series['poster_path'] else None,
+            'rating': series['vote_average'],
+            'first_air_date': series['first_air_date'],
+            'media_type': 'tv'
+        })
+    return jsonify({'succes': True, 'results': series_list})
