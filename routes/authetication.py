@@ -23,6 +23,7 @@ def register():
     new_user = User(
         email=data['email']
     )
+
     new_user.set_password(data['password_hash'])  # Use set_password methodto hash the password
 
     # Save user to database
@@ -63,3 +64,4 @@ def login():
         'access_token': access_token,
         'user': user_schema.dump(user)
     }), 200
+
