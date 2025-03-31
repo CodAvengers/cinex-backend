@@ -49,6 +49,7 @@ def create_app():
     from routes.latest_series_and_movies import tmdb_routes
     from routes.popular_movies import popular_routes
     from routes.authetication import user_bp
+    from routes.all_movies import all_movies
     from routes.trending_movies_and_series import trending_routes
 
 
@@ -56,7 +57,9 @@ def create_app():
     app.register_blueprint(popular_routes, url_prefix='/api')
     app.register_blueprint(tmdb_routes, url_prefix='/api')
     app.register_blueprint(user_bp)
+    app.register_blueprint(all_movies)
     app.register_blueprint(trending_routes, url_prefix='/api')
+
  
 
     return app
