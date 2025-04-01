@@ -14,7 +14,7 @@ TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 
 # Get the user's favorites
 @favorites_bp.route('/favorites', methods=['GET'])
-@jwt_required()  # Require JWT authentication
+@jwt_required()  
 def get_favorites():
     try:
         # Get the current user's ID from the JWT
