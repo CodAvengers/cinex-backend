@@ -36,9 +36,9 @@ class Favourite(db.Model):
 class Watchlist(db.Model):
     __tablename__ = 'watchlists'
 
-    id = db.Column(db.Integer, primary_key =True)
+    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     tmdb_id = db.Column(db.Integer, nullable=False)
-
-    #relationship
+    added_at = db.Column(db.DateTime, server_default=db.func.now())  # New field
+    
     user = db.relationship('User', back_populates='watchlist', lazy=True)

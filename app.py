@@ -54,19 +54,21 @@ def create_app():
     from routes.trending_movies_and_series import trending_routes
     from routes.discover_filters_movies_and_series import discover_filters
     from routes.favorites import favorites_bp  
-    from routes.movie_details import movie_details_bp  
+    from routes.movie_details import movie_details_bp
+    from routes.watchlist_routes import watchlist_routes   
 
     # Register blueprints with URL prefixes
-    app.register_blueprint(popular_routes, url_prefix='/api')
-    app.register_blueprint(top_rated_routes, url_prefix='/api')
+    app.register_blueprint(popular_routes, url_prefix='/')
+    app.register_blueprint(top_rated_routes, url_prefix='/')
     app.register_blueprint(search_routes, url_prefix='/')
-    app.register_blueprint(tmdb_routes, url_prefix='/api')
+    app.register_blueprint(tmdb_routes, url_prefix='/')
     app.register_blueprint(user_bp)
-    app.register_blueprint(all_movies, url_prefix='/api')
-    app.register_blueprint(trending_routes, url_prefix='/api')
-    app.register_blueprint(discover_filters, url_prefix='/api')
+    app.register_blueprint(all_movies, url_prefix='/')
+    app.register_blueprint(trending_routes, url_prefix='/')
+    app.register_blueprint(discover_filters, url_prefix='/')
     app.register_blueprint(favorites_bp)  
     app.register_blueprint(movie_details_bp) 
+    app.register_blueprint(watchlist_routes)
 
     return app
 
