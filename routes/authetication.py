@@ -23,7 +23,7 @@ def register():
     new_user = User(
         email=data['email']
     )
-    new_user.set_password(data['password'])  # Use set_password methodto hash the password
+    new_user.set_password(data['password'])  # Use set_password method to hash the password
 
     # Save user to database
     db.session.add(new_user)

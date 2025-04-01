@@ -44,18 +44,29 @@ def create_app():
     
     jwt = JWTManager(app)
 
-
-    # Import other blueprints as needed (inside function to avoid circular imports)
+    # Import blueprints
     from routes.latest_series_and_movies import tmdb_routes
-    from routes.popular_movies import popular_routes
-    from routes.authetication import user_bp
-
+    from routes.top_rated import top_rated_routes
+    from routes.popular_routes import popular_routes
+    from routes.search_routes import search_routes
+    from routes.authetication import user_bp  
+    from routes.all_movies import all_movies
+    from routes.trending_movies_and_series import trending_routes
+    from routes.discover_filters_movies_and_series import discover_filters
+    from routes.favorites import favorites_bp  
+    from routes.movie_details import movie_details_bp  
 
     # Register blueprints with URL prefixes
     app.register_blueprint(popular_routes, url_prefix='/api')
+    app.register_blueprint(top_rated_routes, url_prefix='/api')
+    app.register_blueprint(search_routes, url_prefix='/')
     app.register_blueprint(tmdb_routes, url_prefix='/api')
     app.register_blueprint(user_bp)
- 
+    app.register_blueprint(all_movies, url_prefix='/api')
+    app.register_blueprint(trending_routes, url_prefix='/api')
+    app.register_blueprint(discover_filters, url_prefix='/api')
+    app.register_blueprint(favorites_bp)  
+    app.register_blueprint(movie_details_bp) 
 
     return app
 
