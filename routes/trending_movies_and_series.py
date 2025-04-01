@@ -9,7 +9,26 @@ load_dotenv()
 trending_routes = Blueprint('trending_routes', __name__)
 
 TMDB_API_KEY = os.getenv("TMDB_API_KEY")
+tmdb_api_key = os.getenv("tmdb_api_key")
 BASE_URL = "https://api.themoviedb.org/3"
+
+def get_genre_mapping():
+    """Fetch genre mapping from TMDB API"""
+    url = f'{BASE_URL}/genre/tv/list?language=en'
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {tmdb_api_key}"
+    }
+
+    response = requests.get(url, headers=headers)
+    try:
+        response.raise_for_status()  # Raises an error if request fails
+        return {genre['id']: genre['name'] for genre in response.json().get('genres', [])}
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching genres: {e}")  # Log the error
+        return {}  # Return empty dict to prevent crashes
+
+GENRE_MAPPING = get_genre_mapping()  # Store globally
 
 @trending_routes.route('/trending/movies', methods=['GET'])
 def get_trending_movies():
@@ -53,7 +72,7 @@ def get_trending_series():
     url = f'{BASE_URL}/trending/tv/day?page={page}&language=en-US'
     headers = {
             "accept": "application/json",
-            "Authorization": f"Bearer {TMDB_API_KEY}"}
+            "Authorization": f"Bearer {tmdb_api_key}"}
     response = requests.get(url, headers=headers)
     response.raise_for_status() #get the returned status code
 
