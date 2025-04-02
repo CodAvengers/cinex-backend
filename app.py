@@ -55,7 +55,8 @@ def create_app():
     from routes.discover_filters_movies_and_series import discover_filters
     from routes.favorites import favorites_bp  
     from routes.movie_details import movie_details_bp
-    from routes.watchlist_routes import watchlist_routes   
+    from routes.watchlist_routes import watchlist_routes
+    from routes.movies import movies_bp  
 
     # Register blueprints with URL prefixes
     app.register_blueprint(popular_routes, url_prefix='/')
@@ -69,6 +70,7 @@ def create_app():
     app.register_blueprint(favorites_bp)  
     app.register_blueprint(movie_details_bp) 
     app.register_blueprint(watchlist_routes)
+    app.register_blueprint(movies_bp)
 
     return app
 
