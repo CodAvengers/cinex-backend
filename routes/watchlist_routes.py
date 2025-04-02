@@ -10,8 +10,8 @@ watchlist_routes = Blueprint('watchlist_routes', __name__, url_prefix='/api')
 def add_to_watchlist():
     try:
         # Get current user from JWT
-        current_user_email = get_jwt_identity()
-        user = User.query.filter_by(email=current_user_email).first()
+        user_id = get_jwt_identity()
+        user = User.query.filter_by(id=user_id).first()
         
         if not user:
             return jsonify({'success': False, 'error': 'User not found'}), 404
@@ -63,8 +63,9 @@ def add_to_watchlist():
 @jwt_required()
 def get_watchlist():
     try:
-        current_user_email = get_jwt_identity()
-        user = User.query.filter_by(email=current_user_email).first()
+         # Get current user from JWT
+        user_id = get_jwt_identity()
+        user = User.query.filter_by(id=user_id).first()
         
         if not user:
             return jsonify({'success': False, 'error': 'User not found'}), 404
